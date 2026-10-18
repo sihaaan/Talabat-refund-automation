@@ -1,0 +1,23 @@
+# Allow only application source and synthetic examples into Git.
+Input/*
+!Input/.gitkeep
+Register/*
+!Register/.gitkeep
+Output/*
+!Output/.gitkeep
+Reports/*
+!Reports/.gitkeep
+PrivateReview/
+dist/
+*.local.json
+*.exe
+*.env
+.env*
+*.xlsx
+*.pdf
+*.mp4
+*.vtt
+*.zip
+*.log
+*.bak
+TestResults/

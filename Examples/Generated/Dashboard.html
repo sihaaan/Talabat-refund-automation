@@ -1,0 +1,60 @@
+<html><head><meta charset="utf-8"><title>Refund dashboard</title><style>body{font:16px Segoe UI,Arial;margin:36px;color:#172b4d}table{border-collapse:collapse;margin:24px 0}th,td{padding:8px 12px;border-bottom:1px solid #ddd;text-align:left}th{background:#183b56;color:white}p{max-width:1000px}</style></head><body><h1>Refund dashboard</h1><p>Snapshot 2026-10-19 01:47 (Dubai). Amount totals are separated by currency. Legacy tracker statuses are not verified outcomes. Prepared, reserved, requested and confirmed are separate measures.</p><table>
+<colgroup><col/><col/><col/><col/><col/><col/></colgroup>
+<tr><th>Metric</th><th>Value</th><th>Numerator</th><th>Denominator</th><th>Formula</th><th>Note</th></tr>
+<tr><td>Total registered refund requests</td><td>29</td><td>29</td><td></td><td>Unique register RecordIds, including legacy records</td><td>Repeated input rows do not increase unique requests.</td></tr>
+<tr><td>Ever prepared</td><td>12</td><td></td><td></td><td>Records with PreparedAt</td><td>Not an attempt. Includes subsequently cancelled preparations.</td></tr>
+<tr><td>Recorded attempted/submitted with evidence</td><td>2</td><td>2</td><td></td><td>Unique records with affirmative submission evidence</td><td>CLI false/missing results are excluded because they may not establish an API attempt.</td></tr>
+<tr><td>CLI request errors requiring investigation</td><td>0</td><td></td><td></td><td>CLI refund_initiated=false with error</td><td>Blocked permanently from automatic resubmission; not a verified final failure.</td></tr>
+<tr><td>Confirmed successful</td><td>1</td><td>1</td><td></td><td>FinalStatus = ConfirmedSuccessful</td><td>Requires explicit PSP evidence.</td></tr>
+<tr><td>Confirmed failed</td><td>0</td><td>0</td><td></td><td>FinalStatus = ConfirmedFailed</td><td>Tracker failure signals and CLI request errors are excluded.</td></tr>
+<tr><td>Pending verification</td><td>6</td><td>6</td><td></td><td>Non-new records with unknown final outcome</td><td>Includes legacy, reserved and uncertain records; not evidence of failure.</td></tr>
+<tr><td>Reserved, outcome not recorded</td><td>0</td><td></td><td></td><td>SubmissionStatus = Reserved</td><td>Investigate before any further action.</td></tr>
+<tr><td>Legacy attempt signals</td><td>4</td><td></td><td></td><td>Imported historical processed/refunded/failed evidence</td><td>Blocked from resubmission; not verified success.</td></tr>
+<tr><td>Verified success rate</td><td>1.0000</td><td>1</td><td>1</td><td>ConfirmedSuccessful / (ConfirmedSuccessful + ConfirmedFailed)</td><td>Blank if no verified outcomes. Read beside pending verification count.</td></tr>
+<tr><td>Recorded submission rate</td><td>0.0690</td><td>2</td><td>29</td><td>Recorded attempted/submitted unique records / all registered requests</td><td>Legacy history is not assumed complete; denominator includes legacy requests.</td></tr>
+<tr><td>Confirmed voided</td><td>0</td><td></td><td></td><td>FinalStatus = Voided</td><td>Excluded from refund success denominator.</td></tr>
+</table>
+<h2>Latest preparation: input row counts</h2><p>Delayed, duplicate-blocked and exception counts below belong only to the latest preparation. One row has one primary category; a delayed row may also contain a prior-attempt warning.</p><table>
+<colgroup><col/><col/><col/><col/></colgroup>
+<tr><th>Category</th><th>PSP</th><th>Country</th><th>Rows</th></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>AE</td><td>5</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>KW</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>QA</td><td>2</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>EG</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>JO</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>BH</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>OM</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Checkout</td><td>IQ</td><td>1</td></tr>
+<tr><td>Exceptions</td><td>Checkout</td><td>AE</td><td>6</td></tr>
+<tr><td>Exceptions</td><td>Unknown</td><td>AE</td><td>1</td></tr>
+<tr><td>Delayed</td><td>Checkout</td><td>AE</td><td>2</td></tr>
+<tr><td>ReviewOnly</td><td>Tap</td><td>KW</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Tap</td><td>AE</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>Switch</td><td>IQ</td><td>1</td></tr>
+<tr><td>Duplicates</td><td>BenefitPay</td><td>BH</td><td>1</td></tr>
+<tr><td>Ineligible</td><td>Checkout</td><td>AE</td><td>2</td></tr>
+<tr><td>Exceptions</td><td>QPay</td><td>QA</td><td>1</td></tr>
+<tr><td>ReviewOnly</td><td>ZainCash</td><td>IQ</td><td>1</td></tr>
+<tr><td>ReviewOnly</td><td>Knet</td><td>KW</td><td>1</td></tr>
+</table>
+<h2>Breakdown by PSP, with separate currencies</h2><table>
+<colgroup><col/><col/><col/><col/><col/><col/><col/><col/><col/><col/><col/></colgroup>
+<tr><th>Dimension</th><th>Group</th><th>Currency</th><th>Requested</th><th>KnownAmountMajor</th><th>MissingAmounts</th><th>Attempted</th><th>ConfirmedSuccessful</th><th>ConfirmedFailed</th><th>UnknownFinal</th><th>VerifiedSuccessRate</th></tr>
+<tr><td>PSP</td><td>Checkout</td><td>AED</td><td>13</td><td>89.0</td><td>3</td><td>1</td><td>1</td><td>0</td><td>12</td><td>1.0000</td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>KWD</td><td>1</td><td>1.555</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>QAR</td><td>2</td><td>28.0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td></td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>EGP</td><td>1</td><td>10</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>JOD</td><td>1</td><td>2.125</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>BHD</td><td>1</td><td>1.555</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>OMR</td><td>1</td><td>2.125</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Checkout</td><td>IQD</td><td>1</td><td>1250</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Unknown</td><td>AED</td><td>1</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Tap</td><td>KWD</td><td>1</td><td>5.45</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Tap</td><td>AED</td><td>1</td><td>12.5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Switch</td><td>IQD</td><td>1</td><td>9000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>BenefitPay</td><td>BHD</td><td>1</td><td>10.555</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>QPay</td><td>QAR</td><td>1</td><td>10</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>ZainCash</td><td>IQD</td><td>1</td><td>12000</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+<tr><td>PSP</td><td>Knet</td><td>KWD</td><td>1</td><td>1.25</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td></td></tr>
+</table>
+</body></html>

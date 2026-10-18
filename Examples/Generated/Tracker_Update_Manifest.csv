@@ -1,0 +1,3 @@
+"RecordId","Payment ID","Original Payment IDs","Order ID","Country","Original status","New status","Attempt date","Run ID","Evidence/reference"
+"RF-7143c45d9d500a30a38ca962","pay_00000000000000000000000001","pay_00000000000000000000000001","FAKE-ORDER-1","AE","Pending","Refund Processed","2026-10-18T21:47:04.2779205Z","RUN_20261019_014658_71091f2c","SYNTHETIC TEST; no actual execution"
+"RF-5a5d335d447bbc149d03e1d8","fakebenefit19","fakebenefit19","FAKE-ORDER-19","BH","Pending","Refund Processed","2026-10-18T21:47:08.0546197Z","RUN_20261019_014658_71091f2c","FAKE sent email reference"

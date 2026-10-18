@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "timeZoneId": "Arabian Standard Time",
+  "delayedDays": 30,
+  "trackerHeaderRow": 4,
+  "amountUnitsConfirmed": false,
+  "amountApprovalReference": "",
+  "trackerAmountUnit": "major",
+  "countryCurrencyConfirmed": false,
+  "refundAmountPolicyConfirmed": false,
+  "countryCurrencies": {"AE":"AED","QA":"QAR","EG":"EGP","BH":"BHD","KW":"KWD","OM":"OMR","JO":"JOD","IQ":"IQD"},
+  "currencies": {"AED":100,"QAR":100,"EGP":100,"BHD":1000,"KWD":1000,"OMR":1000,"JOD":1000,"IQD":1000},
+  "tap": {
+    "batchSize": 100,
+    "templateConfirmed": false,
+    "defaultReason": "",
+    "allowedReasons": ["The product is out of stock","possible values are duplicate","fraudulent","requested_by_customer"],
+    "maxFilenameLength": 30
+  },
+  "pspMappings": {
+    "Credit Card":"Checkout", "Credit Card & talabat Pay":"Checkout",
+    "CKO-Knet":"Checkout", "CKO-Knet & talabat Pay":"Checkout",
+    "CKO-QPay":"Checkout", "CKO-QPay & talabat Pay":"Checkout",
+    "CKO-BahrainBenefit":"Checkout", "CKO-BahrainBenefit & talabat Pay":"Checkout",
+    "Tap":"Tap", "Tap & talabat Pay":"Tap", "Tap||Missing":"Tap", "Missing||Tap":"Tap",
+    "Tap as Acquirer":"TapAcquirer", "Tap Acquirer":"TapAcquirer",
+    "HyperPay":"Switch", "HyperPay & talabat Pay":"Switch",
+    "Switch":"Switch", "Switch & talabat Pay":"Switch",
+    "BenefitPay":"BenefitPay", "BenefitPay & talabat Pay":"BenefitPay",
+    "KNET||BenefitPay":"BenefitPay", "KNET||BenefitPay & talabat Pay":"BenefitPay",
+    "QPAY":"QPay", "QPAY & talabat Pay":"QPay", "TESS":"QPay",
+    "Zaincash":"ZainCash", "ZainCash & talabat Pay":"ZainCash",
+    "KNET":"Knet", "KNET & talabat Pay":"Knet", "Deema":"Deema"
+  },
+  "psps": {
+    "Checkout":{"method":"CLI","normalCountryFolders":true,"delayedDays":30,"templateConfirmed":true},
+    "Tap":{"method":"Portal","normalCountryFolders":true,"delayedDays":30,"templateConfirmed":false},
+    "Switch":{"method":"Email","normalCountryFolders":false,"delayedDays":30,"templateConfirmed":false},
+    "BenefitPay":{"method":"Email","normalCountryFolders":false,"delayedDays":30,"templateConfirmed":true},
+    "QPay":{"method":"Email","normalCountryFolders":false,"delayedDays":30,"templateConfirmed":true},
+    "ZainCash":{"method":"Email","normalCountryFolders":false,"delayedDays":30,"templateConfirmed":true},
+    "TapAcquirer":{"method":"Email","normalCountryFolders":true,"delayedDays":30,"templateConfirmed":false},
+    "Knet":{"method":"Portal","normalCountryFolders":false,"delayedDays":30,"templateConfirmed":false},
+    "Deema":{"method":"Manual","normalCountryFolders":false,"delayedDays":30,"templateConfirmed":false}
+  }
+}

@@ -1,0 +1,20 @@
+Run: RUN_20261019_014658_71091f2c
+As-of date: 2026-10-19
+Rows read: 31
+Eligible-status rows: 29
+Prepared: 12
+Exceptions: 8
+Duplicates: 4
+Delayed: 2
+ReviewOnly: 3
+Ineligible: 2
+
+1. Review Row_Dispositions and the currency/amount assumptions.
+2. Delayed_30plus_days and Review_Only files are investigation attachments, not upload files. Review prior-attempt warnings before emailing.
+3. Batches.csv lists prepared submission files. Record approval and reserve a batch with Start-Submission before manually using it.
+4. Import Checkout results or record actual Tap/email submission evidence. Missing results mean Uncertain, never rerun.
+5. Generate reports. Only recorded real attempts enter Tracker_Update_Manifest.
+6. Sync the controller tracker through its existing manual process, match a fresh export, then change only approved Refund Status cells. The tracker stamps its own timestamp.
+7. Record final PSP outcomes separately. A failed signal or email is not final success.
+
+No refund, email, Drive upload or tracker update was performed. CSVs preserve text IDs on disk; import into Excel with ID columns as Text.

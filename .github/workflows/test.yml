@@ -1,0 +1,21 @@
+name: Synthetic refund tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        shell: [powershell, pwsh]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Core integration tests
+        shell: ${{ matrix.shell }}
+        run: ./Scripts/Test-Refunds.ps1
+      - name: Edge-case tests
+        shell: ${{ matrix.shell }}
+        run: ./Scripts/Test-EdgeCases.ps1
+      - name: Extracted package startup
+        shell: ${{ matrix.shell }}
+        run: ./Scripts/Test-PackagedStartup.ps1

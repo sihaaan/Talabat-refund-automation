@@ -1,0 +1,12 @@
+{
+  "Checkout":{"to":[],"cc":[],"external":[],"note":"Ask controller to identify the acquirer and country-specific escalation contact. A pay_ ID alone does not identify the acquirer."},
+  "Tap":{"to":["r.awad@tap.company"],"cc":["e.behery@tap.company","h.elganzoury@tap.company"],"external":[],"note":"Confirm escalation ownership; these are documented Tap contacts."},
+  "TapAcquirer":{"to":["r.awad@tap.company"],"cc":["e.behery@tap.company","h.elganzoury@tap.company"],"external":[],"note":"Acquirer workflow; never route a Checkout pay_ payment into a second automatic refund queue."},
+  "Switch":{"to":["shereen.mohammed@talabat.com","arez.qader@talabat.com","hussein.salman@talabat.com","finance.iraq@talabat.com","vera.anichkina@talabat.com"],"cc":[],"external":["mousa.abbas@switch.com.iq","mustafa.nasef@switch.com.iq","noor.abdulwahid@mubasher.com.iq","ali.hassan@switch.com.iq"],"note":"HyperPay and Switch use the same internal recipients per operator instruction. External contacts are escalation options; confirm before addressing."},
+  "BenefitPay":{"to":["hasan.alshaikh@talabat.com","vera.anichkina@talabat.com"],"cc":[],"external":[],"note":"Internal workflow."},
+  "QPay":{"to":["accounts@tesspayments.com"],"cc":[],"external":[],"note":"More than 90 days: acquiring-bank escalation, not a routine TESS refund request. Ask controller for the bank contact."},
+  "ZainCash":{"to":["ahmed.amer@zaincash.iq","o.farooq@zaincash.iq","mustafa.sadiq@zaincash.iq","ahmed.hayder@zaincash.iq"],"cc":["mohammed.hazim@zaincash.iq","mustafa.muhanad@zaincash.iq"],"external":[],"note":"Operation ID required."},
+  "Knet":{"to":["RPA040@nbk.com"],"cc":["MerchantSvcs@nbk.com"],"external":[],"note":"Manual refund requests must be sent through authorized Kuwait Finance POCs Abedalqader Issa or Murad Kunhamed. Subject: Merchant Refund Request. Do not collect card details in this tool."},
+  "Deema":{"to":[],"cc":[],"external":[],"note":"Controller must provide the contact and approved bulk format."},
+  "Unknown":{"to":[],"cc":[],"external":[],"note":"Controller review required; do not guess the PSP."}
+}

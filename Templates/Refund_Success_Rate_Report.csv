@@ -1,0 +1,2 @@
+Metric,Value,Numerator,Denominator,Formula,Note
+Verified success rate,,,,ConfirmedSuccessful / (ConfirmedSuccessful + ConfirmedFailed),Blank when no verified outcomes
