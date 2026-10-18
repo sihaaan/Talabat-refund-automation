@@ -15,27 +15,152 @@ A Windows PowerShell 5.1 application for preparing refund files, separating dela
 - Result import, final outcome recording, local tracker matching, an HTML dashboard and Excel-compatible CSV reports with explicit rate definitions.
 - Synthetic examples and automated tests. No company transaction files, Checkout executable or credentials are distributed.
 
+## What "email attachments" means
+
+An email attachment here means a **generated CSV containing the transactions for one PSP/country**. For example, a delayed Checkout UAE list or a Switch Iraq list needing investigation. You review that CSV, then attach it to an email you send manually to the appropriate POC. The application never sends the email.
+
+| File | Purpose | What you do with it |
+|---|---|---|
+| `TalabatRefundAutomation-<version>.zip` | Installs this application | Transfer it to your work laptop and extract it. It is not a PSP transaction attachment. |
+| Separate transaction-review ZIP, if supplied | A snapshot of previously extracted real review lists | Extract it and read its `Attachment_Index.csv` and `READ_FIRST.txt`. Send only the relevant reviewed CSV to its authorized recipient, not the whole multi-PSP ZIP. This snapshot does not replace next week's fresh tracker export and is not in GitHub. |
+| `Delayed_30plus_days.csv` | Transactions at least 30 days old for that PSP/country | Attach to an investigation/escalation email after reviewing prior-attempt warnings. It is not a portal upload file or an instruction to refund every row. |
+| `ReviewOnly.csv`, `Exceptions.csv` or `Duplicates.csv` under a PSP/country folder | Cases needing missing information or investigation | Select the relevant list and ask the POC/controller to resolve the stated issues. Prior attempts remain blocked. |
+| `Email_Draft.txt` beside a CSV | Suggested recipients, subject and email wording | Open it, confirm recipients and copy/edit the wording into Outlook. Normally attach the CSV, not this text file. |
+| A validated normal email batch, such as `Switch_IQ_1.csv` or `BenefitPay_BH_1.csv` | An actual refund-request file for an email PSP | Follow the approval/reservation steps in section 6, then send manually and record submission evidence. |
+| `refunds_AE_1.csv` or `tap_AE_1.csv` | Checkout CLI input or Tap portal upload | Follow the respective submission workflow. These are not the delayed investigation lists. |
+
+`Register`, internal reports, credentials and the application ZIP are not standard attachments to a PSP. Read the CSV's `ReasonForReview` and `MissingFields` columns before sending an investigation list. A review email is a communication, not a recorded refund submission or confirmed success.
+
 ## 1. Install on the work laptop
 
-Use your company's permitted method to transfer the ZIP. Email gateways sometimes block ZIPs containing scripts; if yours does, use an IT-approved transfer method instead of disguising the extension. Download the code ZIP/release from this private repository on the home laptop; work-laptop GitHub access is not required.
+**Create the main application folder manually.** The ZIP supplies the scripts, configuration and templates. The initializer creates any missing working folders, and preparation creates PSP/country/date folders. No Python, Git or administrator access is needed on the work laptop.
 
-1. Create `%LOCALAPPDATA%\TalabatRefundAutomation` (normally `C:\Users\YOUR_WORK_USERNAME\AppData\Local\TalabatRefundAutomation`). It is outside the usual OneDrive Desktop/Documents folders. Check that your company has not redirected it.
-2. Extract the ZIP contents there. You should see `Scripts`, `Config`, `Templates`, `README.md` and `Run-Prepare.bat` directly inside that folder. Avoid an accidental extra nested folder.
-3. Open Windows PowerShell from Start, then paste:
+### Step 1: Transfer the application ZIP
+
+Download the current application ZIP from the [private GitHub releases](https://github.com/sihaaan/Talabat-refund-automation/releases/latest) and transfer it using your company's permitted method. Work-laptop GitHub access is not required if you transfer the ZIP from your home laptop. If email blocks scripts/ZIPs, use an IT-approved transfer method rather than disguising the extension.
+
+Use the clean application ZIP for installation. The separate transaction-review ZIP contains previously extracted CSV lists; it does not install the application.
+
+### Step 2: Create the main folder
+
+Press **Windows + R**, paste the following, and press Enter:
+
+```text
+%LOCALAPPDATA%
+```
+
+In the folder that opens, create a new folder named **TalabatRefundAutomation**. Its full location is normally `C:\Users\YOUR_WORK_USERNAME\AppData\Local\TalabatRefundAutomation`. This avoids the usual OneDrive Desktop/Documents locations; check that your company has not redirected it.
+
+### Step 3: Extract the application
+
+Right-click the application ZIP, choose **Extract All**, and select the folder you just created. Open that folder and check that these items are directly inside it:
+
+```text
+TalabatRefundAutomation/
+  Config/
+  Scripts/
+  Templates/
+  Examples/
+  docs/
+  README.md
+  Run-Prepare.bat
+  Run-Reports.bat
+```
+
+If they are inside an extra nested application folder, move its contents up one level. Keep all supplied files together. The ZIP may also already contain the empty working folders listed in step 5.
+
+### Step 4: Open PowerShell and initialize
+
+Open Start, search for **Windows PowerShell**, and open it normally, without Run as administrator. Paste:
 
 ```powershell
 $refundRoot = Join-Path $env:LOCALAPPDATA 'TalabatRefundAutomation'
 Set-Location -LiteralPath $refundRoot
 $PSVersionTable.PSVersion
-Get-ExecutionPolicy -List
+```
+
+Built-in Windows PowerShell should show **5.1**. PowerShell **7.5 or later** is also supported; older PowerShell 7 versions are rejected because their JSON date conversion can change stored timestamps.
+
+Then run:
+
+```powershell
 .\Scripts\Initialize-Workspace.ps1
 ```
 
-Use built-in Windows PowerShell **5.1**, or PowerShell **7.5 or later**. Older PowerShell 7 versions are rejected because their JSON date conversion can change stored timestamps. The initializer creates `Input`, `Output`, `Register` and `Reports`; it preserves existing history. Do not initialize an empty replacement when history is missing.
+The initializer creates missing working folders and initializes the permanent register. An existing initialized workspace is preserved. Do not initialize an empty replacement when history is missing.
 
-If scripts are blocked, follow company IT policy. This project deliberately does not set `Bypass`, change machine policy or use administrator privileges. If IT permits unblocking a verified downloaded ZIP, unblock it through Windows Properties **before extracting**. If signing/allowlisting is required, ask IT to sign/approve the scripts. A `.bat` launcher does not bypass policy.
+If Windows reports that scripts are blocked, give IT the package and the error message for approval/signing. Do not bypass company execution policy. If IT permits unblocking a verified downloaded ZIP, unblock it through Windows Properties **before extracting**. A `.bat` launcher does not bypass policy.
 
-Create a **separate unsynced** folder such as `%LOCALAPPDATA%\TalabatCheckoutTool`. Obtain the approved executable and `.env` directly through Engineering's approved process. Keep them together there. Never put them in this repository, the transfer ZIP, Google Drive, OneDrive or chat. These scripts never open `.env` or invoke the executable.
+### Step 5: Know which folders you maintain
+
+| Folder | Created/supplied by | Your job |
+|---|---|---|
+| `TalabatRefundAutomation` | You | Extract the application here and keep this location across weeks. |
+| `Scripts`, `Config`, `Templates`, `Examples`, `docs` | Application ZIP | Keep the supplied files together. Edit configuration only when the relevant assumptions are confirmed. |
+| `Input` | ZIP/initializer | Put the downloaded full tracker CSV here. |
+| `Output` | ZIP/initializer; preparation adds subfolders | Collect generated PSP/country files here. |
+| `Reports` | ZIP/initializer; scripts add run folders | Read summaries, exceptions, dashboards and tracker matches here. |
+| `Register` | ZIP/initializer; scripts maintain its contents | Preserve permanently and back up. Never manually edit, delete or replace it for a new week. |
+| `TalabatCheckoutTool` | You, when needed in step 11 | Separate unsynced folder for the Engineering-approved Checkout tool. |
+
+Do not manually create PSP, country, year, month or week folders. The preparation script creates them.
+
+### Step 6: Run the tests once
+
+In the same PowerShell window, run these one at a time:
+
+```powershell
+.\Scripts\Test-Refunds.ps1
+.\Scripts\Test-EdgeCases.ps1
+.\Scripts\Test-PackagedStartup.ps1
+```
+
+Expected results: **33 core tests passed**, **20 edge-case tests passed**, and **Packaged startup: PASS**. These tests use isolated fake data. They do not issue refunds or send emails. Resolve any failure before using real data.
+
+### Step 7: Download a fresh tracker
+
+Open the controller's Google Sheet, perform the usual manual **Sync**, select **Bulk Refunds**, and download that full tab as CSV, including historical statuses. Save it as `BulkRefunds.csv` inside the application's `Input` folder. Keep the original downloaded CSV intact; opening and resaving it through Excel can alter long identifiers.
+
+### Step 8: Make the first run review-only
+
+Run:
+
+```powershell
+.\Scripts\Prepare-Refunds.ps1 -InputCsv '.\Input\BulkRefunds.csv' -ReviewOnly
+```
+
+Wait for completion; a large tracker can take several minutes. This creates delayed and incomplete-data investigation lists without creating submission batches. Your first run does not require the Checkout executable or credentials.
+
+### Step 9: Read the results and identify the CSV to email
+
+Open `Reports`, then the newest folder starting with `RUN_`. Read `Run_Sheet.txt` and `Preparation_Summary.csv` first, followed by the relevant exceptions/review reports.
+
+For a PSP investigation email, find that PSP and country under `Output`, open the relevant `Delayed_30plus_days` or `Review_Only` folder, and review its CSV. Open the adjacent `Email_Draft.txt`, confirm recipients, and copy/edit the wording into Outlook. Attach only that relevant reviewed CSV. The table above explains the different file types; section 6 explains how to record the communication.
+
+To inspect CSVs in Excel, use **Data > From Text/CSV**, set payment/order identifiers to **Text**, and use a dot-decimal locale. Review the reasons and prior-attempt warnings before emailing. Sending a review email does not mean a refund was submitted.
+
+### Step 10: Obtain controller confirmations before enabling submission files
+
+Ask Finance to confirm the source amount units, currency mappings/conversion factors (particularly IQD), and whether the captured amount is the approved amount to refund after prior refunds or adjustments. Use `docs\CONTROLLER-QUESTIONS.md` for each PSP's missing fields and format confirmations.
+
+After approval, follow section 2 to record it and section 5 for Tap enrichment/template settings. You can continue generating review lists while those confirmations are outstanding.
+
+### Step 11: Set up the separate Checkout folder when needed
+
+Use **Windows + R > `%LOCALAPPDATA%`** again and create **TalabatCheckoutTool**. Obtain the approved executable and `.env` through Engineering's approved process and keep them together in this separate unsynced folder. Never put them in the application repository, transfer ZIP, Google Drive, OneDrive or chat. The preparation scripts never open `.env` or invoke the executable. Section 6 covers the separate manual Checkout workflow.
+
+### Step 12: Follow the weekly routine after configuration
+
+1. Sync the Google Sheet and download the full Bulk Refunds CSV.
+2. Archive last week's input and put the new CSV in `Input`; retain the same permanent `Register`.
+3. Double-click `Run-Prepare.bat` after the relevant configuration is approved, or continue using the explicit `-ReviewOnly` command.
+4. Review outputs and obtain approval. Reserve a validated submission batch before manually using it, as explained in section 6. Investigation emails use the review workflow instead.
+5. Import Checkout results or record actual Tap/email submission evidence after the action occurs.
+6. Double-click `Run-Reports.bat` and match the tracker-update manifest against a fresh tracker export using section 8.
+7. Manually mark only verified matching rows **Refund Processed**. The tracker supplies its own timestamp.
+8. Back up the permanent register to your approved location, and later record final PSP outcomes separately.
+
+**Steps 1-9 get the first installation tested and producing review files to inspect with the controller.** The remaining sections give the detailed commands for configuration, submissions, tracking, outcomes and backups.
 
 ## 2. Confirm amounts once with Finance
 

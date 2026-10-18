@@ -1,3 +1,9 @@
+# Version 1.0.1
+
+Documentation update: the README now includes the complete work-laptop walkthrough, explicitly identifies the folders created manually versus automatically, and gives the first review-only run and weekly routine. It also explains application ZIPs, transaction-review ZIPs, CSV email attachments, email draft text and provider submission files, with examples of which file to send to a POC.
+
+Refund scripts and default configuration are unchanged from version 1.0.0. The source-only ZIP includes the updated README; real transaction files remain separate.
+
 # Version 1.0.0
 
 Phase 1 prepares and tracks refunds locally. It never executes the Checkout binary, calls a payment API, sends email, updates Google Sheets, uploads to Drive or reads credentials.
